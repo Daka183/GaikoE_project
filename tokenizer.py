@@ -22,6 +22,7 @@ class Tokenization():
         self.x_test = []
         self.y_test = []
         self.total_words = -1
+        self.word_count = -1
 
     def quantity_categories(self, path_file, sheet_number):
         exel_category_df = pandas.read_excel(path_file, sheet_name=sheet_number)
@@ -41,6 +42,17 @@ class Tokenization():
 
         # Замена слов на числа по словарю
         self.textSequences = self.tokenizer.texts_to_sequences(text_data)
+        print(self.textSequences[0])
+
+        print('В словаре {} слов'.format(self.total_words))
+        print('Укажите число слов которые будут использованы в векторизации:')
+        self.word_count = int(input())
+
+        self.tokenizer = Tokenizer(num_words=self.word_count)
+        self.tokenizer.fit_on_texts(text_data)
+        self.total_words = len(self.tokenizer.word_index)
+        self.textSequences = self.tokenizer.texts_to_sequences(text_data)
+        print(self.textSequences[0])
 
         with open('tokenizer.pickle', 'wb') as handle:
             pickle.dump(self.tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -69,14 +81,9 @@ class Tokenization():
 
     def vectorization_arrays(self):
         print(u'Преобразуем описания заявок в векторы чисел')
-        print('В словаре {} слов'.format(self.total_words))
-        print('Укажите число слов которые будут использованы в векторизации:')
-        word_count = int(input())
-
-        tokenizer2 = Tokenizer(num_words=word_count)
         
-        x_train_vec = tokenizer2.sequences_to_matrix(self.x_train, mode='binary')
-        x_test_vec = tokenizer2.sequences_to_matrix(self.x_test, mode='binary')
+        x_train_vec = self.tokenizer.sequences_to_matrix(self.x_train, mode='binary')
+        x_test_vec = self.tokenizer.sequences_to_matrix(self.x_test, mode='binary')
         print('Размерность X_train:', x_train_vec.shape)
         print('Размерность X_test:', x_test_vec.shape)
 
@@ -85,7 +92,7 @@ class Tokenization():
         print('y_train shape:', y_train_vec.shape)
         print('y_test shape:', y_test_vec.shape)
 
-        stat = np.array([word_count, self.quantity_category, self.total_words])
+        stat = np.array([self.word_count, self.quantity_category, self.total_words])
 
         np.savetxt('x_train_vec.txt', x_train_vec, fmt='%d')
         np.savetxt('x_test_vec.txt', x_test_vec, fmt='%d')
@@ -93,13 +100,9 @@ class Tokenization():
         np.savetxt('y_test_vec.txt', y_test_vec, fmt='%d')
         np.savetxt('data_info.txt', stat, fmt='%d')
 
+
     def vectorization_arrays_LSTM(self, max_word):
         print(u'Преобразуем описания заявок в векторы чисел')
-        print('В словаре {} слов'.format(self.total_words))
-        print('Укажите число слов которые будут использованы в векторизации:')
-        word_count = int(input())
-        #word_count = self.total_words
-        tokenizer2 = Tokenizer(num_words=word_count)
 
         x_train_vec = keras.preprocessing.sequence.pad_sequences(self.x_train, maxlen=max_word)
         x_test_vec = keras.preprocessing.sequence.pad_sequences(self.x_test, maxlen=max_word)
@@ -111,7 +114,7 @@ class Tokenization():
         print('y_train shape:', y_train_vec.shape)
         print('y_test shape:', y_test_vec.shape)
 
-        stat = np.array([word_count, self.quantity_category, self.total_words, max_word])
+        stat = np.array([self.word_count, self.quantity_category, self.total_words, max_word])
 
         np.savetxt('x_train_vec_LSTM.txt', x_train_vec, fmt='%d')
         np.savetxt('x_test_vec_LSTM.txt', x_test_vec, fmt='%d')
