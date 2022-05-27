@@ -32,7 +32,7 @@ class Tokenization():
         i = 0
         text_data = []
         while i < self.size_exel_data_df:
-            text_data.append((self.exel_data_df.values[i][1]))
+            text_data.append(str(self.exel_data_df.values[i][1]))
             i = i + 1 
 
         # Создание словаря (слово -> число)
