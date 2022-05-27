@@ -37,7 +37,7 @@ class LSTM_model():
     def create_model(self):
         self.model = Sequential()
         self.model.add(Embedding(self.word_count+1, self.max_word))
-        self.model.add(LSTM(32, dropout=0.2, recurrent_dropout=0.2))
+        self.model.add(LSTM(32, input_shape=(self.max_word,), dropout=0.2, recurrent_dropout=0.2))
         self.model.add(Dense(self.quantity_category, activation='sigmoid'))
 
         self.model.compile(loss='binary_crossentropy',
@@ -47,7 +47,7 @@ class LSTM_model():
         print(self.model.summary())
 
     def training_model(self):
-        history = self.model.fit(tf.expand_dims(self.x_train, axis=-1), self.y_train,
+        history = self.model.fit(self.x_train, self.y_train,
                     batch_size=32,
                     epochs=5,
                     validation_data=(self.x_test, self.y_test))
