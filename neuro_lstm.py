@@ -1,4 +1,5 @@
 from tensorflow import keras
+import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, LSTM
 from keras.models import load_model
@@ -46,7 +47,7 @@ class LSTM_model():
         print(self.model.summary())
 
     def training_model(self):
-        history = self.model.fit(self.x_train, self.y_train,
+        history = self.model.fit(tf.expand_dims(self.x_train, axis=-1), self.y_train,
                     batch_size=32,
                     epochs=5,
                     validation_data=(self.x_test, self.y_test))
