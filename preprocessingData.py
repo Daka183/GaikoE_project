@@ -97,7 +97,7 @@ class PreprocessingData():
     def max_word(self):
         max_words = 0
         data_df = pandas.read_excel(settings.path_data_preprocessing, sheet_name=settings.sheet_name_preprocessing)
-        text = data_df['Запрос']
+        text = str(data_df['Запрос'])
         for desc in text:
             words = len(desc.split())
             if words > max_words:
@@ -108,8 +108,6 @@ class PreprocessingData():
         return max_words
 
 
-        
-        
         
     
 
