@@ -77,6 +77,6 @@ while n != 4096:
     e = 5
     while e != 15:
         optAndLayer(n, e, max_layer)
-        e = e + 1
+        e = e + 5
     
     n = n * 2
