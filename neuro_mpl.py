@@ -90,7 +90,7 @@ class MPL():
 
     # Загрузка словаря
     def load_token(self):
-        with open('tokenizer.pickle', 'rb') as handle:
+        with open('tokenizer_mpl.pickle', 'rb') as handle:
             dict = pickle.load(handle)
         tokenizer = Tokenizer(num_words=self.word_count)
         
