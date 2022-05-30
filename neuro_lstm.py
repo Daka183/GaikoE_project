@@ -48,6 +48,11 @@ class LSTM_model():
         # LSTM слой, первое число количество нейронов
         self.model.add(LSTM(32, input_shape=(self.max_word,), dropout=0.2, recurrent_dropout=0.2))
 
+        # self.model.add(LSTM(16, dropout=0.2, recurrent_dropout=0.2)) # Для последнего lstm слоя
+        
+        #self.model.add(LSTM(16, dropout=0.2, recurrent_dropout=0.2, return_sequences=True)) # Для промежуточных lstm слоёв
+
+
         # Выходной слой
         self.model.add(Dense(self.quantity_category, activation='sigmoid'))
 
@@ -88,7 +93,7 @@ class LSTM_model():
 
     # Загрузка словаря
     def load_token(self):
-        with open('tokenizer.pickle', 'rb') as handle:
+        with open('tokenizer_lstm.pickle', 'rb') as handle:
             dict = pickle.load(handle)
         tokenizer = Tokenizer(num_words=self.word_count)
         
@@ -122,4 +127,3 @@ class LSTM_model():
         plt.xlabel('epoch')
         plt.legend(['train', 'test'], loc='upper left')
         plt.show()
- 
