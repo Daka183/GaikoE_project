@@ -41,7 +41,7 @@ while flag != 0:
         q = int(input())
         handel_two = tokenizer.Tokenization(settings.path_data_preprocessing, settings.sheet_name_preprocessing)
         handel_two.quantity_categories(settings.path_all_category, settings.sheet_name_categories)
-        handel_two.creation_dictionary()
+        handel_two.creation_dictionary(q)
         handel_two.data_from_arrays(train_test_split=0.9)
         if q == 1:
             handel_two.vectorization_arrays()
@@ -141,4 +141,4 @@ while flag != 0:
 
 
 
-         
+        
