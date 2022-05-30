@@ -70,4 +70,3 @@ optimizer_lstm = 'adam'
 # Adamax
 # Nadam
 
- 
